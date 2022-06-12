@@ -1,0 +1,5 @@
+*
+!.gitignore
+!download_cyclegan.sh
+!data/celeb2manga/process_anime.py
+!data/process_celeba.py
