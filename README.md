@@ -105,3 +105,13 @@ All transformed faces are stored in `cyclegan/images/galdx2manga/`.
 
 # Discussion: 
 
+![Samples from a trained Cycle-GAN after 10 epochs](some_results.png)
+
+As we can observe from the above example samples, we see that---even though CelebA -> Anime is working reasonably well---the model is struggeling to transform Anime faces to CelebA faces. Perhaps, this is not that surprising, since Anime -> CelebA is, intuitively, the more demanding direction of style transfer. 
+Nonetheless, since I trained the model without any hyperparameter tuning, I believe that there is a lot of room for improvement: 
+
+  - `lambda_cyc` regularizes via the cyclic-loss, that is, it punishes the model for learning bad reconstructions. In particular, our observation from above suggests that CelebA -> Manga -> CelebA might perform badly, which could be improved by increasing `lambda_cyc`. 
+  - Increasing `lambda_id` encourages the model to preserve the color composition. However, in our case we don't want to do so necessarily. Hence, another potential improvement can be achieved by decreasing `lambda_id`. 
+  - `decay_epoch` determines the epoch from which we start a decay of the learning rate. I set it to $1$ in my experiments, which seem to be way to low. The improvement of the model performance decays very fast, suggesting that decay_epoch should be increased.
+  - Unbalanced datasets: CelebA contains around $200\,000$ samples, whereas the Anime dataset contains less than $10\, 000$ samples. Hence, each batch contains way more CelebA samples, which might lead to a model that puts less weight on performing well on Anime samples. A way to solve this issue could be to i) get more Anime samples, or ii) to use a balanced trainloader.
+    
