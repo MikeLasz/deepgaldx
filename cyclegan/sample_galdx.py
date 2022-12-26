@@ -73,12 +73,13 @@ G_BA.eval()
 for j in range(3):
     # Load image
     for filename in os.listdir(directory):
-        image_path = os.path.join(directory, filename)
-        image = Image.open(image_path)
-        image = transforms_(image)
-        if cuda:
-            image = image.cuda()
-        image.unsqueeze_(0)
-        manga_galdyn = G_BA(image)
-        save_image(manga_galdyn, f'images/galdx2manga/epoch{args.epoch}/{filename}_{j}.jpg')
+        if filename.endswith('png') or filename.endswith('jpg') or filename.endswith('jpeg'):
+            image_path = os.path.join(directory, filename)
+            image = Image.open(image_path)
+            image = transforms_(image)
+            if cuda:
+                image = image.cuda()
+            image.unsqueeze_(0)
+            manga_galdyn = G_BA(image)
+            save_image(manga_galdyn, f'images/galdx2manga/epoch{args.epoch}/{filename}_{j}.jpg')
 
